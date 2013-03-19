@@ -8,9 +8,12 @@
     i18n_domain="collective.relatedfiles">
 
   <include package=".browser" />
-
+  <five:registerPackage package="." />
+  
   <i18n:registerTranslations directory="locales" />
-
+  <include package="Products.CMFCore" file="permissions.zcml"
+             zcml:condition="have plone-41" />
+             
   <genericsetup:registerProfile
       name="default"
       title="collective.relatedfiles"
@@ -18,6 +21,7 @@
       description='Extension profile'
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
+      
   <include package=".upgrades" />
 
 
