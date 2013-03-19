@@ -126,3 +126,47 @@ class Assignment(base.Assignment):
         "manage portlets" screen.
         """
         return self.portlet_title or _(u"Related Files")
+
+class Renderer(base.Renderer):
+    """Portlet renderer.
+
+    This is registered in configure.zcml. The referenced page template is
+    rendered, and the implicit variable 'view' will refer to an instance
+    of this class. Other methods can be added and referenced in the template.
+    """
+
+
+class AddForm(base.AddForm):
+    """Portlet add form.
+
+    This is registered in configure.zcml. The form_fields variable tells
+    zope.formlib which fields to display. The create() method actually
+    constructs the assignment that is being added.
+    """
+    form_fields = form.Fields(IRelatedFiles)
+    label = _(u"Add Related Files Portlet")
+    description = _(u"This portlet displays recent Related Files.")
+
+    def create(self, data):
+        return Assignment(
+            portlet_title=data.get('portlet_title', u'Related Files'),
+            count=data.get('count', 5),
+            only_video=data.get('only_video', False),
+            only_audio=data.get('only_audio', False),
+            only_pdf=data.get('only_pdf', False),
+            only_subject=data.get('only_subject', False),
+            display_all_fallback=data.get('display_all_fallback', True),
+            display_description=data.get('display_description', True),
+        )
+
+
+class EditForm(base.EditForm):
+    """Portlet edit form.
+
+    This is registered with configure.zcml. The form_fields variable tells
+    zope.formlib which fields to display.
+    """
+    form_fields = form.Fields(IRelatedFiles)
+    label = _(u"Edit Related Files Portlet")
+    description = _(u"This portlet displays related items based on "
+                     "keywords matches, title.")
