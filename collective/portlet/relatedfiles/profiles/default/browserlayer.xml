@@ -1,0 +1,4 @@
+<layers>
+    <layer name="collective.relatedfiles"
+           interface="collective.relatedfiles.browser.interfaces.ILayer" />
+</layers>
