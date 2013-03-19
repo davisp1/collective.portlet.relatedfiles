@@ -1,13 +1,13 @@
 <configure
     xmlns="http://namespaces.zope.org/genericsetup"
-    i18n_domain="collective.relatedfiles">
+    i18n_domain="collective.portlet.relatedfiles">
 
     <upgradeStep
         source="1000"
         destination="1001"
         title="Upgrade"
         description=""
-        profile="collective.relatedfiles:default"
+        profile="collective.portlet.relatedfiles:default"
         handler=".v1x.upgrade_1000_to_1001"
         />
 

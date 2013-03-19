@@ -1,5 +1,5 @@
 #!/bin/sh
-PRODUCTNAME='collective.relatedfiles'
+PRODUCTNAME='collective.portlet.relatedfiles'
 I18NDOMAIN=$PRODUCTNAME
 
 # Synchronise the .pot with the templates.

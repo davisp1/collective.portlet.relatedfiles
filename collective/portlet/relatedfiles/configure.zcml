@@ -5,7 +5,7 @@
     xmlns:i18n="http://namespaces.zope.org/i18n"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     xmlns:plone="http://namespaces.plone.org/plone"
-    i18n_domain="collective.relatedfiles">
+    i18n_domain="collective.portlet.relatedfiles">
 
   <include package=".browser" />
   <five:registerPackage package="." />
@@ -16,7 +16,7 @@
              
   <genericsetup:registerProfile
       name="default"
-      title="collective.relatedfiles"
+      title="collective.portlet.relatedfiles"
       directory="profiles/default"
       description='Extension profile'
       provides="Products.GenericSetup.interfaces.EXTENSION"
