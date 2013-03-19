@@ -24,5 +24,22 @@
       
   <include package=".upgrades" />
 
+  <!-- Register the portlet -->
+
+  <!-- If the portlet has no configurable parameters, you can remove
+          the EditForm declaration in relateditems.py and delete
+          the 'editview' attribute from this statement.
+   -->
+
+  <plone:portlet
+         name="collective.portlet.relatedfiles.RelatedFiles"
+         interface=".relatedfiles.IRelatedFiles"
+         assignment=".relatedfiles.Assignment"
+         view_permission="zope2.View"
+         edit_permission="cmf.ManagePortal"
+         renderer=".relatedfiles.Renderer"
+         addview=".relatedfiles.AddForm"
+         editview=".relatedfiles.EditForm"
+         />
 
 </configure>
