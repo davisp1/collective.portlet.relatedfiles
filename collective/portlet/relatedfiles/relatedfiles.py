@@ -91,3 +91,38 @@ class IRelatedFiles(IPortletDataProvider):
             u"If selected, we will show the content short description"),
         default=True,
     )
+
+class Assignment(base.Assignment):
+    """Portlet assignment.
+
+    This is what is actually managed through the portlets UI and associated
+    with columns.
+    """
+
+    implements(IRelatedFiles)
+
+    def __init__(self,
+                 portlet_title=u'Related Files',
+                 count=5,
+                 only_video=False,
+                 only_pdf=False,
+                 only_audio=False,
+                 only_subject=False,
+                 display_description=True,
+                 display_all_fallback=True,
+                ):
+        self.portlet_title = portlet_title
+        self.count = count
+        self.only_video = only_video
+        self.only_audio = only_audio
+        self.only_pdf = only_pdf
+        self.only_subject = only_subject
+        self.display_description = display_description
+        self.display_all_foallback = display_all_fallback
+
+    @property
+    def title(self):
+        """This property is used to give the title of the portlet in the
+        "manage portlets" screen.
+        """
+        return self.portlet_title or _(u"Related Files")
