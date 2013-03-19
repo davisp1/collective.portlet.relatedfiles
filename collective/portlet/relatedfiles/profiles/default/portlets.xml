@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<portlets xmlns:i18n="http://namespaces.zope.org/i18n"
+          i18n:domain="plone">
+
+ <!-- Portlet type registrations -->
+
+ <portlet
+   addview="collective.portlet.relatedfiles.relatedfiles.RelatedFiles"
+   title="Related Files"
+   description=""
+   i18n:attributes="title"
+   />
+
+</portlets>

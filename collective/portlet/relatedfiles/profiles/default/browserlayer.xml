@@ -1,4 +1,4 @@
 <layers>
-    <layer name="collective.relatedfiles"
-           interface="collective.relatedfiles.browser.interfaces.ILayer" />
+    <layer name="collective.portlet.relatedfiles"
+           interface="collective.portlet.relatedfiles.browser.interfaces.ILayer" />
 </layers>
