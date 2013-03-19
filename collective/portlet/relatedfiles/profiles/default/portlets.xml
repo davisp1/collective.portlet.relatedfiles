@@ -5,7 +5,7 @@
  <!-- Portlet type registrations -->
 
  <portlet
-   addview="collective.portlet.relatedfiles.relatedfiles.RelatedFiles"
+   addview="collective.portlet.relatedfiles.RelatedFiles"
    title="Related Files"
    description=""
    i18n:attributes="title"
