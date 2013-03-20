@@ -155,7 +155,7 @@ class Renderer(base.Renderer):
     
     @property
     def available(self):
-        return len(self._data())>0
+        return True
 
     def getRelatedFiles(self):
         return self._data()
@@ -210,7 +210,33 @@ class Renderer(base.Renderer):
             if not res.lower() in ['not', 'and', 'or'] and len(res) != 1]
 
         return search_query
+    
+    def _query(self):
+        context = aq_inner(self.context)
 
+        contents = [self.context]
+        # TODO: test if a collection limited to 3 items show anything...
+        # get items in folder or collection
+        folder_contents = []
+        if self.context.isPrincipiaFolderish:
+            folder_contents = self._contents()
+            folder_contents = map(lambda x: x.getObject(), folder_contents)
+        else:
+            # Add references and back-references (related items)
+            try:
+                contents += context.getReferences()
+            except Exception:
+                pass
+            try:
+                contents += context.getBackReferences()
+            except Exception:
+                pass
+
+        contents += folder_contents
+
+        search_query = self._itemsQuery(contents)
+        return search_query
+    
     def _itemsQuery(self, values):
         query = ''
         items = []
@@ -228,7 +254,7 @@ class Renderer(base.Renderer):
                                       name=u'plone_tools')
         context = aq_inner(self.context)
         here_path = ('/').join(context.getPhysicalPath())
-
+        #import pdb;pdb.set_trace()
         # Exclude items from related if contained in folderish
         content = []
         if self.context.isPrincipiaFolderish:
@@ -256,20 +282,23 @@ class Renderer(base.Renderer):
                 del query['SearchableText']
         
         results = catalog(**query)
+        #import pdb;pdb.set_trace()
 
         types=[]
-        if self.data.including_video:types+="video"
-        if self.data.including_pdf:types+="pdf"
-        if self.data.including_audio:types+="audio"
-        
-        self.all_results=[res for res in results if ( ( res.getIcon in types ) and ( res.getPath() not in exclude_items ) )]
+        if self.data.including_video:types.append("video")
+        if self.data.including_pdf:types.append("pdf")
+        if self.data.including_audio:types.append("audio")
+        if len(types):
+            self.all_results=[res for res in results if ( ( res.getIcon.split(".")[0] in types ) and ( res.getPath() not in exclude_items ) )]
+        else:
+            self.all_results=[res for res in results if res.getPath() not in exclude_items]
 
         # No related items were found
         # Get the latest modified articles
 
         #if self.data.show_recent_items and self.all_results == []:
         if self.data.display_all_fallback and (self.all_results == []):
-            results = catalog(portal_type=self.data.allowed_types,
+            results = catalog(portal_type=('File',),
                               sort_on='modified',
                               sort_order='reverse',
                               sort_limit=extra_limit)
