@@ -1,0 +1,46 @@
+<dl class="portlet portletRelatedItems"
+    i18n:domain="collective.portlet.relateditems">
+
+    <dt class="portletHeader relatedHeader">
+        <span class="portletTopLeft"></span>
+        <span tal:content="view/getPortletTitle">Related Items</span>
+        <span class="portletTopRight"></span>
+    </dt>
+
+    <tal:rep tal:define="related_items view/getRelatedFiles;
+                         properties context/@@plone_tools/properties;
+                         use_view_action properties/site_properties/typesUseViewActionInListings|python:();"
+             tal:repeat="item related_items">
+        <dd tal:define="oddrow repeat/item/odd;
+                        plone_view context/@@plone;
+                        getIcon nocall:plone_view/getIcon;
+                        item_object item/getObject;"
+            tal:attributes="class python:oddrow and 'portletItem even' or 'portletItem odd'">
+
+            <a href=""
+               tal:attributes="href python:item.Type in use_view_action and item.getURL() + '/view' or item.getURL();
+                               title item/Description">
+                <img src="" alt=""
+                     tal:condition="exists:item_object/image_tile"
+                     tal:replace="structure python: path('nocall:item_object/tag')(scale='tile', css_class='relatedImage')" />
+             	<img src="" alt="" class="relatedImage"
+                             tal:attributes="src python:item.getURL() + '/leadImage_tile'" />
+				<span class="relatedTitle" tal:content="item/Title"></span></a>
+
+        <p class="relatedDiscription"
+          tal:condition="view/displayDescription"
+          tal:content="python:view.trimDescription(item.Description)">Discription </p>
+				<div class="visualClear"></div>
+        </dd>
+    </tal:rep>
+
+    <dd class="portletFooter"
+        tal:condition="view/showRelatedItemsLink">
+        <span class="portletBotomLeft"></span>
+        <span>
+           <a href="" tal:attributes="href view/getAllRelatedItemsLink" i18n:translate="more_url">more ...</a>
+        </span>
+        <span class="portletBottomRight"></span>
+    </dd>
+
+</dl>
