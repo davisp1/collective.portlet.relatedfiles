@@ -21,15 +21,6 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 from collective.portlet.relatedfiles import RelatedItemsMessageFactory as _
 
-try:
-    from collective.contentleadimage.config import IMAGE_FIELD_NAME
-    from collective.contentleadimage.leadimageprefs import ILeadImagePrefsForm
-    from zope.component import getUtility
-    from Products.CMFPlone.interfaces import IPloneSiteRoot
-    LEADIMAGE_EXISTS = True
-except ImportError:
-    LEADIMAGE_EXISTS = False
-
 _NB_DESC_CHAR = 100
 
 # used to sanitize search
@@ -155,7 +146,7 @@ class Renderer(base.Renderer):
     
     @property
     def available(self):
-        return True
+        return len(self._data())>0
 
     def getRelatedFiles(self):
         return self._data()
@@ -215,6 +206,8 @@ class Renderer(base.Renderer):
         context = aq_inner(self.context)
 
         contents = [self.context]
+        search_query = ""
+        items=[]
         # TODO: test if a collection limited to 3 items show anything...
         # get items in folder or collection
         folder_contents = []
@@ -234,19 +227,12 @@ class Renderer(base.Renderer):
 
         contents += folder_contents
 
-        search_query = self._itemsQuery(contents)
-        return search_query
-    
-    def _itemsQuery(self, values):
-        query = ''
-        items = []
-        for item in values:
+        for item in contents:
             items += self._itemQuery(item)
         # remove duplicated search keywords
         items = self.uniq(items)
-        query = " OR ".join(items)
-
-        return query
+        search_query = " OR ".join(items)
+        return search_query
 
     @memoize
     def _data(self):
@@ -288,7 +274,7 @@ class Renderer(base.Renderer):
         if self.data.including_video:types.append("video")
         if self.data.including_pdf:types.append("pdf")
         if self.data.including_audio:types.append("audio")
-        if len(types):
+        if len(types)>0:
             self.all_results=[res for res in results if ( ( res.getIcon.split(".")[0] in types ) and ( res.getPath() not in exclude_items ) )]
         else:
             self.all_results=[res for res in results if res.getPath() not in exclude_items]
